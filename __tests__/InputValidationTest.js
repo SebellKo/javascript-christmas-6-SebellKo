@@ -1,4 +1,4 @@
-import View from '../Views/View';
+import View from '../Views/View.js';
 
 describe('Input 유효성 검사.', () => {
   let view = 0;
