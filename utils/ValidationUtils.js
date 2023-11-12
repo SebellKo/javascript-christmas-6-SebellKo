@@ -12,4 +12,8 @@ const checkIncludeHypen = (input) => {
   return input.includes('-');
 };
 
-export { checkIsNumber, checkIsKorean, checkIncludeHypen };
+const checkIsInRange = (min, max, input) => {
+  return input >= min && input <= max;
+};
+
+export { checkIsNumber, checkIsKorean, checkIncludeHypen, checkIsInRange };
