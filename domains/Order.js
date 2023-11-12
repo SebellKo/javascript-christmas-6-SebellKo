@@ -20,6 +20,16 @@ class Order {
       throw new Error('[ERROR]');
     }
   }
+
+  createOrderBoard() {
+    const orderBoard = [];
+    const eachMenu = this.#menu.map((item) => item.split('-'));
+    eachMenu.forEach((each) => {
+      orderBoard.push({ name: each[0], amount: Number(each[1]) });
+    });
+
+    return orderBoard;
+  }
 }
 
 export default Order;
