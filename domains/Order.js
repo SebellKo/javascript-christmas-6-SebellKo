@@ -31,7 +31,7 @@ class Order {
 
     return orderBoard;
   }
-  // [ { name: '제로콜라', amount: 2 }, { name: '바비큐립', amount: 1 },];
+
   calculateTotalPrice() {
     const orderBoard = this.createOrderBoard();
     const totalPrice = orderBoard.reduce((acc, cur) => {
