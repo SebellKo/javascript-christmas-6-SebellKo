@@ -21,6 +21,10 @@ class OrderValidation {
   checkIsTotalCountValid() {
     return this.orderCount.reduce((acc, cur) => (acc += cur)) < 20;
   }
+  checkIsAllBeverage() {
+    const beverageMenu = extractKeys(MENU_BOARD, 'menu', 'beverage');
+    return this.orderMenu.every((menu) => beverageMenu.includes(menu));
+  }
 }
 
 export default OrderValidation;
