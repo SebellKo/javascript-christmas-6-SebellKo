@@ -1,25 +1,49 @@
-import InputView from './InputView';
+import InputView from './InputView.js';
+import {
+  checkIsNumber,
+  checkIsKorean,
+  checkIncludeHypen,
+} from '../utils/ValidationUtils.js';
+import OutputView from './OutputView.js';
 
 class View {
   async inputDate() {
-    const date = await InputView.readDate();
+    let date = await InputView.readDate();
 
-    if (!this.checkIsDateNumber(date))
-      throw new Error('[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.');
+    while (!this.checkIsDateNumber(date)) {
+      OutputView.printDateError();
+      date = await InputView.readDate();
+    }
+
     return Number(date);
   }
 
   async inputOrder() {
-    const order = await InputView.readOrder();
+    let order = await InputView.readOrder();
 
-    if (!this.checkIsOrderInForm(order))
-      throw new Error('[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.');
+    while (!this.checkIsOrderInForm(order)) {
+      OutputView.printMenuError();
+      order = await InputView.readOrder();
+    }
 
     return order.split(',');
   }
 
-  checkIsDateNumber(date) {}
-  checkIsOrderInForm(order) {}
+  checkIsDateNumber(date) {
+    return checkIsNumber(date);
+  }
+
+  checkIsOrderInForm(order) {
+    const checkHypen = order.split(',');
+    const checkReg = checkHypen.map((menu) => menu.split('-'));
+
+    return (
+      checkHypen.every((menu) => checkIncludeHypen(menu)) &&
+      checkReg.every(
+        (index) => checkIsKorean(index[0]) && checkIsNumber(index[1]),
+      )
+    );
+  }
 }
 
 export default View;
