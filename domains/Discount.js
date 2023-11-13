@@ -1,6 +1,5 @@
 import MENU_BOARD from '../constants/menu.js';
 import { checkIsInRange } from '../utils/ValidationUtils.js';
-import { extractKeys } from '../utils/utils.js';
 
 class Discount {
   #date;
@@ -14,7 +13,7 @@ class Discount {
     if (!checkIsInRange(1, 31, date)) throw new Error('[ERROR]');
   }
 
-  calculateDiscountByType(orderMenu, type) {
+  #calculateDiscountByType(orderMenu, type) {
     const typeDishes = orderMenu.filter((menu) => {
       const menuInfo = MENU_BOARD.find((item) => menu.name === item.menu);
       return menuInfo.type === type;
@@ -43,16 +42,15 @@ class Discount {
   }
 
   calculateWeekendDiscount(orderMenu) {
-    return this.calculateDiscountByType(orderMenu, 'main');
+    return this.#calculateDiscountByType(orderMenu, 'main');
   }
 
   calculateWeekdayDiscount(orderMenu) {
-    return this.calculateDiscountByType(orderMenu, 'desert');
+    return this.#calculateDiscountByType(orderMenu, 'desert');
   }
 
   calculateStarDayDiscount() {
-    const day = new Date(`2023-12-${this.#date}`);
-    if (day === 0 || this.#date === 25) return 1000;
+    return 1000;
   }
 }
 
