@@ -28,6 +28,7 @@ class Promotion {
       totalDiscount += this.#discount.calculateWeekdayDiscount(orderBoard);
     if (discountList?.starDay)
       totalDiscount += this.#discount.calculateStarDayDiscount();
+    if (this.checkCanGetGift()) totalDiscount += 25000;
 
     return totalDiscount;
   }
