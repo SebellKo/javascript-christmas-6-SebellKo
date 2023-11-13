@@ -7,7 +7,7 @@ const MENU_BOARD = [
   { menu: '해산물파스타', price: 35000, type: 'main' },
   { menu: '크리스마스파스타', price: 25000, type: 'main' },
   { menu: '초코케이크', price: 15000, type: 'desert' },
-  { menu: '아이스크림', price: 5000, type: 'desrt' },
+  { menu: '아이스크림', price: 5000, type: 'desert' },
   { menu: '제로콜라', price: 3000, type: 'beverage' },
   { menu: '레드와인', price: 60000, type: 'beverage' },
   { menu: '샴페인', price: 25000, type: 'beverage' },
