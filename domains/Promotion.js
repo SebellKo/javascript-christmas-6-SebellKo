@@ -15,6 +15,11 @@ class Promotion {
     return totalPrice >= 120000;
   }
 
+  checkCanGetDiscount() {
+    const totalPrice = this.#order.calculateTotalPrice();
+    return totalPrice >= 10000;
+  }
+
   calculateTotalDiscount() {
     const discountList = this.#discount.checkDate();
     const orderBoard = this.#order.createOrderBoard();
@@ -31,6 +36,17 @@ class Promotion {
     if (this.checkCanGetGift()) totalDiscount += 25000;
 
     return totalDiscount;
+  }
+
+  calculatePriceForPay() {
+    return this.#order.calculateTotalPrice() - this.calculateTotalDiscount();
+  }
+
+  provideBadge() {
+    if (this.calculateTotalDiscount() >= 20000) return '산타';
+    if (this.calculateTotalDiscount() >= 10000) return '트리';
+    if (this.calculateTotalDiscount() >= 5000) return '별';
+    return '없음';
   }
 }
 
