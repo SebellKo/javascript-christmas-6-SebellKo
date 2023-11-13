@@ -14,6 +14,19 @@ class Discount {
     if (!checkIsInRange(1, 31, date)) throw new Error('[ERROR]');
   }
 
+  calculateDiscountByType(orderMenu, type) {
+    const typeDishes = orderMenu.filter((menu) => {
+      const menuInfo = MENU_BOARD.find((item) => menu.name === item.menu);
+      return menuInfo.type === type;
+    });
+
+    const totalDiscount = typeDishes.reduce((acc, menu) => {
+      return acc + menu.amount * 2023;
+    }, 0);
+
+    return totalDiscount;
+  }
+
   checkDate() {
     const contentsObj = {};
     const day = new Date(`2023-12-${this.#date}`);
@@ -30,28 +43,11 @@ class Discount {
   }
 
   calculateWeekendDiscount(orderMenu) {
-    let totalDiscount = 0;
-    orderMenu.forEach((menu) => {
-      const menuIndex = MENU_BOARD.findIndex((item) => menu.name === item.menu);
-      const type = MENU_BOARD[menuIndex].type;
-
-      if (type === 'main') totalDiscount += menu.amount * 2023;
-    });
-
-    return totalDiscount;
+    return this.calculateDiscountByType(orderMenu, 'main');
   }
 
   calculateWeekdayDiscount(orderMenu) {
-    const mainDishes = orderMenu.filter((menu) => {
-      const menuInfo = MENU_BOARD.find((item) => menu.name === item.menu);
-      return menuInfo && menuInfo.type === 'main';
-    });
-
-    const totalDiscount = mainDishes.reduce((acc, menu) => {
-      return acc + menu.amount * 2023;
-    }, 0);
-
-    return totalDiscount;
+    return this.calculateDiscountByType(orderMenu, 'desert');
   }
 
   calculateStarDayDiscount() {
