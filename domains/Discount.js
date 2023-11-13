@@ -29,7 +29,7 @@ class Discount {
   checkDate() {
     const contentsObj = {};
     const day = new Date(`2023-12-${this.#date}`);
-    if (this.#date < 25) contentsObj.christmasDday = true;
+    if (this.#date <= 25) contentsObj.christmasDday = true;
     if (day === 5 || day === 6) contentsObj.weekend = true;
     if (this.#date === 25 || day === 0) contentsObj.starDay = true;
     contentsObj.weekday = true;
