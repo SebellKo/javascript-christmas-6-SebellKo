@@ -1,5 +1,5 @@
 import MENU_BOARD from '../constants/menu.js';
-import { checkIsInRange } from '../utils/ValidationUtils.js';
+import { checkIsInRange, checkIsNumber } from '../utils/ValidationUtils.js';
 
 class Discount {
   #date;
@@ -10,7 +10,8 @@ class Discount {
   }
 
   #validate(date) {
-    if (!checkIsInRange(1, 31, date)) throw new Error('[ERROR]');
+    if (!checkIsNumber(date) || !checkIsInRange(1, 31, date))
+      throw new Error('날짜');
   }
 
   #calculateDiscountByType(orderMenu, type) {
@@ -28,17 +29,21 @@ class Discount {
 
   checkDate() {
     const contentsObj = {};
-    const day = new Date(`2023-12-${this.#date}`);
+    const day = new Date(`2023-12-${this.#date}`).getDay();
+
     if (this.#date <= 25) contentsObj.christmasDday = true;
-    if (day === 5 || day === 6) contentsObj.weekend = true;
     if (this.#date === 25 || day === 0) contentsObj.starDay = true;
-    contentsObj.weekday = true;
+    if (day === 5 || day === 6) {
+      contentsObj.weekend = true;
+    } else {
+      contentsObj.weekday = true;
+    }
 
     return contentsObj;
   }
 
   calculateChristmasDdayDiscount() {
-    return this.#date * 100 + 1000;
+    return (this.#date - 1) * 100 + 1000;
   }
 
   calculateWeekendDiscount(orderMenu) {
