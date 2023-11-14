@@ -5,13 +5,12 @@ class Discount {
   #date;
 
   constructor(date) {
-    this.#validate(date);
     this.#date = date;
   }
 
-  #validate(date) {
-    if (!checkIsNumber(date) || !checkIsInRange(1, 31, date))
-      throw new Error('날짜');
+  static validate(date) {
+    if (!checkIsNumber(date) || !checkIsInRange(1, 31, date)) return false;
+    return true;
   }
 
   #calculateDiscountByType(orderMenu, type) {
@@ -31,30 +30,27 @@ class Discount {
     const contentsObj = {};
     const day = new Date(`2023-12-${this.#date}`).getDay();
 
-    if (this.#date <= 25) contentsObj.christmasDday = true;
-    if (this.#date === 25 || day === 0) contentsObj.starDay = true;
-    if (day === 5 || day === 6) {
-      contentsObj.weekend = true;
-    } else {
-      contentsObj.weekday = true;
-    }
+    contentsObj.christmasDday = this.#date <= 25;
+    contentsObj.starDay = this.#date === 25 || day === 0;
+    contentsObj.weekend = day === 5 || day === 6 ? true : false;
+    contentsObj.weekday = !contentsObj.weekend;
 
     return contentsObj;
   }
 
-  calculateChristmasDdayDiscount() {
+  getChristmasDdayDiscount() {
     return (this.#date - 1) * 100 + 1000;
   }
 
-  calculateWeekendDiscount(orderMenu) {
+  getWeekendDiscount(orderMenu) {
     return this.#calculateDiscountByType(orderMenu, 'main');
   }
 
-  calculateWeekdayDiscount(orderMenu) {
+  getWeekdayDiscount(orderMenu) {
     return this.#calculateDiscountByType(orderMenu, 'desert');
   }
 
-  calculateStarDayDiscount() {
+  getStarDayDiscount() {
     return 1000;
   }
 }
