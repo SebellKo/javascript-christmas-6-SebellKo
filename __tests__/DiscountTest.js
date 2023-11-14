@@ -10,44 +10,49 @@ describe('Discount 메소드 테스트', () => {
   test('checkDate 메소드', () => {
     const date = 15;
     discount = new Discount(date);
-    const expectedResult = { christmasDday: true, weekend: true };
+    const expectedResult = {
+      christmasDday: true,
+      weekend: true,
+      starDay: false,
+      weekday: false,
+    };
     const testResult = discount.checkDate();
 
     expect(testResult).toEqual(expectedResult);
   });
 
-  test('calculateChristmasDdayDiscount 메소드', () => {
+  test('getChristmasDdayDiscount 메소드', () => {
     const date = 20;
     discount = new Discount(date);
     const expectedResult = 2900;
-    const testResult = discount.calculateChristmasDdayDiscount();
+    const testResult = discount.getChristmasDdayDiscount();
 
     expect(testResult).toEqual(expectedResult);
   });
 
-  test('calculateWeekendDiscount 메소드', () => {
+  test('getWeekendDiscount 메소드', () => {
     const date = 9;
     discount = new Discount(date);
     const expectedResult = 2023;
-    const testResult = discount.calculateWeekendDiscount(orderMenu);
+    const testResult = discount.getWeekendDiscount(orderMenu);
 
     expect(testResult).toEqual(expectedResult);
   });
 
-  test('calculateWeekdayDiscount 메소드', () => {
+  test('getWeekdayDiscount 메소드', () => {
     const date = 19;
     discount = new Discount(date);
     const expectedResult = 2023;
-    const testResult = discount.calculateWeekdayDiscount(orderMenu);
+    const testResult = discount.getWeekdayDiscount(orderMenu);
 
     expect(testResult).toEqual(expectedResult);
   });
 
-  test('calculateStarDayDiscount 메소드', () => {
+  test('getStarDayDiscount 메소드', () => {
     const date = 25;
     discount = new Discount(date);
     const expectedResult = 1000;
-    const testResult = discount.calculateStarDayDiscount();
+    const testResult = discount.getStarDayDiscount();
 
     expect(testResult).toEqual(expectedResult);
   });
