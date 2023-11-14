@@ -9,7 +9,11 @@ class PromotionController {
 
   async start() {
     OutputView.printStartMent();
-    await this.getUserOrder();
+    await this.getUserPromotion();
+    this.printPromotion();
+  }
+
+  printPromotion() {
     this.getOrderMenu();
     this.getTotalPrice();
     this.getGift();
@@ -19,35 +23,27 @@ class PromotionController {
     this.getEventBadge();
   }
 
-  async getUserOrder() {
-    const { date, discount } = await this.configDate();
-    const order = await this.configOrder();
+  async getUserPromotion() {
+    const date = await this.getDateInput();
+    const menu = await this.getOrderInput();
     OutputView.printVisitDate(date);
 
-    this.#promotion = new Promotion(order, discount);
+    this.#promotion = new Promotion(menu, date);
   }
 
-  async configOrder() {
-    const menu = await InputView.readOrder();
-    let order = 0;
-    try {
-      order = new Order(menu);
-      return order;
-    } catch (error) {
-      OutputView.printError(error.message);
-      return await this.configOrder();
+  async getOrderInput() {
+    while (true) {
+      const menu = await InputView.readOrder();
+      if (Order.validate(menu)) return menu;
+      OutputView.printError('주문');
     }
   }
 
-  async configDate() {
-    const date = await InputView.readDate();
-    let discount = 0;
-    try {
-      discount = new Discount(date);
-      return { discount, date };
-    } catch (error) {
-      OutputView.printError(error.message);
-      return await this.configDate();
+  async getDateInput() {
+    while (true) {
+      const date = await InputView.readDate();
+      if (Discount.validate(date)) return date;
+      OutputView.printError('날짜');
     }
   }
 
