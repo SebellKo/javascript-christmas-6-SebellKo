@@ -10,4 +10,10 @@ const extractKeys = (arr, baseKeyName, targetKeyName) => {
   return arr.map((item) => item[baseKeyName]);
 };
 
-export { extractKeys };
+const extractByIndex = (arr, index) => {
+  const splitArr = arr.map((element) => element.split('-'));
+
+  return splitArr.map((element) => element[index]);
+};
+
+export { extractKeys, extractByIndex };
