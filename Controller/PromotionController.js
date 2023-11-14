@@ -1,8 +1,8 @@
 import InputView from '../Views/InputView.js';
-import Promotion from '../Domains/Promotion.js';
+import Promotion from '../domains/Promotion.js';
 import OutputView from '../Views/OutputView.js';
-import Order from '../Domains/Order.js';
-import Discount from '../Domains/Discount.js';
+import Order from '../domains/Order.js';
+import Discount from '../domains/Discount.js';
 
 class PromotionController {
   #promotion;

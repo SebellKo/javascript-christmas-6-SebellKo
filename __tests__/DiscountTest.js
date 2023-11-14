@@ -1,4 +1,4 @@
-import Discount from '../Domains/Discount';
+import Discount from '../domains/Discount';
 
 describe('Discount 메소드 테스트', () => {
   let discount = 0;
