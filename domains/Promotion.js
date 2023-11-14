@@ -1,45 +1,71 @@
-import Order from './Order';
-import Discount from './Discount';
+import Order from './Order.js';
+import Discount from './Discount.js';
 
 class Promotion {
   #order;
   #discount;
 
-  constructor(menu, date) {
-    this.#order = new Order(menu);
-    this.#discount = new Discount(date);
+  constructor(order, date) {
+    this.#order = order;
+    this.#discount = date;
   }
 
   checkCanGetGift() {
-    const totalPrice = this.#order.calculateTotalPrice();
+    const totalPrice = this.readTotalPrice();
     return totalPrice >= 120000;
   }
 
   checkCanGetDiscount() {
-    const totalPrice = this.#order.calculateTotalPrice();
+    const totalPrice = this.readTotalPrice();
     return totalPrice >= 10000;
   }
 
-  calculateTotalDiscount() {
-    const discountList = this.#discount.checkDate();
-    const orderBoard = this.#order.createOrderBoard();
-    let totalDiscount = 0;
+  readOrderBoard() {
+    return this.#order.createOrderBoard();
+  }
 
-    if (discountList?.christmasDday)
-      totalDiscount += this.#discount.calculateChristmasDdayDiscount();
-    if (discountList?.weekend)
-      totalDiscount += this.#discount.calculateWeekendDiscount(orderBoard);
-    if (discountList?.weekday)
-      totalDiscount += this.#discount.calculateWeekdayDiscount(orderBoard);
-    if (discountList?.starDay)
-      totalDiscount += this.#discount.calculateStarDayDiscount();
-    if (this.checkCanGetGift()) totalDiscount += 25000;
+  readTotalPrice() {
+    return this.#order.calculateTotalPrice();
+  }
+
+  calculateTotalDiscount() {
+    const promotion = this.createPromotion();
+    const totalDiscount = Object.entries(promotion).reduce((acc, cur) => {
+      return acc + cur[1];
+    }, 0);
 
     return totalDiscount;
   }
 
   calculatePriceForPay() {
-    return this.#order.calculateTotalPrice() - this.calculateTotalDiscount();
+    const promotion = this.createPromotion();
+    let totalDiscount = this.calculateTotalDiscount();
+    if (promotion['증정 이벤트']) totalDiscount -= 25000;
+    return this.readTotalPrice() - totalDiscount;
+  }
+
+  createPromotion() {
+    const promotion = {};
+
+    if (this.checkCanGetDiscount()) {
+      const discountList = this.#discount.checkDate();
+      const orderBoard = this.readOrderBoard();
+
+      if (discountList?.christmasDday)
+        promotion['크리스마스 디데이 할인'] =
+          this.#discount.calculateChristmasDdayDiscount();
+      if (discountList?.weekend)
+        promotion['주말 할인'] =
+          this.#discount.calculateWeekendDiscount(orderBoard);
+      if (discountList?.weekday)
+        promotion['평일 할인'] =
+          this.#discount.calculateWeekdayDiscount(orderBoard);
+      if (discountList?.starDay)
+        promotion['특별 할인'] = this.#discount.calculateStarDayDiscount();
+      if (this.checkCanGetGift()) promotion['증정 이벤트'] = 25000;
+    }
+
+    return promotion;
   }
 
   provideBadge() {
