@@ -1,5 +1,5 @@
-import MENU_BOARD from '../constants/menu';
-import OrderValidation from './OrderValidation';
+import MENU_BOARD from '../constants/menu.js';
+import OrderValidation from './OrderValidation.js';
 
 class Order {
   #menu;
@@ -11,14 +11,16 @@ class Order {
 
   #validate(menu) {
     const orderValidation = new OrderValidation(menu);
+
     if (
-      orderValidation.checkInMenu() ||
-      orderValidation.checkIsMenuCountValid() ||
-      orderValidation.checkIsMenuNonDuplicated() ||
-      orderValidation.checkIsTotalCountValid() ||
+      !orderValidation.checkIsOrderInForm() ||
+      !orderValidation.checkInMenu() ||
+      !orderValidation.checkIsMenuCountValid() ||
+      orderValidation.checkIsMenuDuplicated() ||
+      !orderValidation.checkIsTotalCountValid() ||
       orderValidation.checkIsAllBeverage()
     ) {
-      throw new Error('[ERROR]');
+      throw new Error('주문');
     }
   }
 
