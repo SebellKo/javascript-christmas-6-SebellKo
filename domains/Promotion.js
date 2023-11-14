@@ -1,5 +1,5 @@
-import Order from './Order.js';
-import Discount from './Discount.js';
+// import Order from './Order.js';
+// import Discount from './Discount.js';
 
 class Promotion {
   #order;

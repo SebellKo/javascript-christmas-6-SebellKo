@@ -1,4 +1,4 @@
-import Discount from '../domains/Discount';
+import Discount from '../Domains/Discount';
 
 describe('Discount 메소드 테스트', () => {
   let discount = 0;
@@ -10,7 +10,7 @@ describe('Discount 메소드 테스트', () => {
   test('checkDate 메소드', () => {
     const date = 15;
     discount = new Discount(date);
-    const expectedResult = { christmasDday: true, weekday: true };
+    const expectedResult = { christmasDday: true, weekend: true };
     const testResult = discount.checkDate();
 
     expect(testResult).toEqual(expectedResult);
@@ -19,7 +19,7 @@ describe('Discount 메소드 테스트', () => {
   test('calculateChristmasDdayDiscount 메소드', () => {
     const date = 20;
     discount = new Discount(date);
-    const expectedResult = 3000;
+    const expectedResult = 2900;
     const testResult = discount.calculateChristmasDdayDiscount();
 
     expect(testResult).toEqual(expectedResult);
