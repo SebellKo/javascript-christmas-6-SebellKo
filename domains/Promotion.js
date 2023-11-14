@@ -1,13 +1,13 @@
-// import Order from './Order.js';
-// import Discount from './Discount.js';
+import Discount from './Discount.js';
+import Order from './Order.js';
 
 class Promotion {
   #order;
   #discount;
 
   constructor(order, date) {
-    this.#order = order;
-    this.#discount = date;
+    this.#order = new Order(order);
+    this.#discount = new Discount(date);
   }
 
   checkCanGetGift() {
@@ -45,25 +45,29 @@ class Promotion {
   }
 
   createPromotion() {
-    const promotion = {};
+    const discountList = this.#discount.checkDate();
+    const orderBoard = this.readOrderBoard();
+    let promotion = {};
 
     if (this.checkCanGetDiscount()) {
-      const discountList = this.#discount.checkDate();
-      const orderBoard = this.readOrderBoard();
-
-      if (discountList?.christmasDday)
-        promotion['크리스마스 디데이 할인'] =
-          this.#discount.calculateChristmasDdayDiscount();
-      if (discountList?.weekend)
-        promotion['주말 할인'] =
-          this.#discount.calculateWeekendDiscount(orderBoard);
-      if (discountList?.weekday)
-        promotion['평일 할인'] =
-          this.#discount.calculateWeekdayDiscount(orderBoard);
-      if (discountList?.starDay)
-        promotion['특별 할인'] = this.#discount.calculateStarDayDiscount();
-      if (this.checkCanGetGift()) promotion['증정 이벤트'] = 25000;
+      promotion = this.addPromotionOnBoard(discountList, orderBoard);
     }
+
+    return promotion;
+  }
+
+  addPromotionOnBoard(discountList, orderBoard) {
+    const promotion = {};
+    if (discountList.christmasDday)
+      promotion['크리스마스 디데이 할인'] =
+        this.#discount.getChristmasDdayDiscount();
+    if (discountList.weekend)
+      promotion['주말 할인'] = this.#discount.getWeekendDiscount(orderBoard);
+    if (discountList.weekday)
+      promotion['평일 할인'] = this.#discount.getWeekdayDiscount(orderBoard);
+    if (discountList.starDay)
+      promotion['특별 할인'] = this.#discount.getStarDayDiscount();
+    if (this.checkCanGetGift()) promotion['증정 이벤트'] = 25000;
 
     return promotion;
   }
