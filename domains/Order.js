@@ -5,11 +5,10 @@ class Order {
   #menu;
 
   constructor(menu) {
-    this.#validate(menu);
     this.#menu = menu;
   }
 
-  #validate(menu) {
+  static validate(menu) {
     const orderValidation = new OrderValidation(menu);
 
     if (
@@ -20,8 +19,9 @@ class Order {
       !orderValidation.checkIsTotalCountValid() ||
       orderValidation.checkIsAllBeverage()
     ) {
-      throw new Error('주문');
+      return false;
     }
+    return true;
   }
 
   createOrderBoard() {
