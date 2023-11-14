@@ -1,11 +1,28 @@
-import MENU_BOARD from '../constants/menu';
-import { extractKeys } from '../utils/utils';
+import MENU_BOARD from '../constants/menu.js';
+import { extractByIndex, extractKeys } from '../utils/utils.js';
+import {
+  checkIncludeHypen,
+  checkIsKorean,
+  checkIsNumber,
+} from '../utils/ValidationUtils.js';
 
 class OrderValidation {
   constructor(menu) {
-    this.orderMenu = extractKeys(menu, 'menu');
-    this.orderCount = extractKeys(menu, 'count');
+    this.menu = menu;
+    this.orderMenu = extractByIndex(menu, 0);
+    this.orderCount = extractByIndex(menu, 1);
   }
+
+  checkIsOrderInForm() {
+    const checkReg = this.menu.map((menu) => menu.split('-'));
+    return (
+      this.menu.every((menu) => checkIncludeHypen(menu)) &&
+      checkReg.every(
+        (index) => checkIsKorean(index[0]) && checkIsNumber(index[1]),
+      )
+    );
+  }
+
   checkInMenu() {
     const menuBoard = extractKeys(MENU_BOARD, 'menu');
 
@@ -14,12 +31,12 @@ class OrderValidation {
   checkIsMenuCountValid() {
     return this.orderCount.every((count) => count >= 1);
   }
-  checkIsMenuNonDuplicated() {
+  checkIsMenuDuplicated() {
     const checkedMenu = new Set(this.orderMenu);
-    return checkedMenu.size === this.orderMenu.length;
+    return checkedMenu.size !== this.orderMenu.length;
   }
   checkIsTotalCountValid() {
-    return this.orderCount.reduce((acc, cur) => (acc += cur)) < 20;
+    return this.orderCount.reduce((acc, cur) => acc + Number(cur), 0) < 20;
   }
   checkIsAllBeverage() {
     const beverageMenu = extractKeys(MENU_BOARD, 'menu', 'beverage');
