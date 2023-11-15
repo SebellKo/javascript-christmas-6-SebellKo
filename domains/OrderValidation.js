@@ -1,4 +1,5 @@
 import MENU_BOARD from '../constants/menu.js';
+import { RANGE } from '../constants/promotion.js';
 import { extractByIndex, extractKeys } from '../utils/utils.js';
 import {
   checkIncludeHypen,
@@ -36,7 +37,10 @@ class OrderValidation {
     return checkedMenu.size !== this.orderMenu.length;
   }
   checkIsTotalCountValid() {
-    return this.orderCount.reduce((acc, cur) => acc + Number(cur), 0) < 20;
+    return (
+      this.orderCount.reduce((acc, cur) => acc + Number(cur), 0) <
+      RANGE.maxOrder
+    );
   }
   checkIsAllBeverage() {
     const beverageMenu = extractKeys(MENU_BOARD, 'menu', 'beverage');

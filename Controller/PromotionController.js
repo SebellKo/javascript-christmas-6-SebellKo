@@ -3,6 +3,7 @@ import Promotion from '../domains/Promotion.js';
 import OutputView from '../Views/OutputView.js';
 import Order from '../domains/Order.js';
 import Discount from '../domains/Discount.js';
+import MESSAGE from '../constants/message.js';
 
 class PromotionController {
   #promotion;
@@ -35,7 +36,7 @@ class PromotionController {
     while (true) {
       const menu = await InputView.readOrder();
       if (Order.validate(menu)) return menu;
-      OutputView.printError('주문');
+      OutputView.printError(MESSAGE.order);
     }
   }
 
@@ -43,7 +44,7 @@ class PromotionController {
     while (true) {
       const date = await InputView.readDate();
       if (Discount.validate(date)) return date;
-      OutputView.printError('날짜');
+      OutputView.printError(MESSAGE.date);
     }
   }
 
@@ -58,8 +59,8 @@ class PromotionController {
   }
 
   getGift() {
-    let gift = '없음';
-    if (this.#promotion.checkCanGetGift()) gift = '샴페인 1개';
+    let gift = MESSAGE.none;
+    if (this.#promotion.checkCanGetGift()) gift = MESSAGE.gift;
 
     OutputView.printGift(gift);
   }

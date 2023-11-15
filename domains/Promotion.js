@@ -1,5 +1,9 @@
+import { GIFT, PROMOTION, PRICE } from '../constants/promotion.js';
+import MESSAGE from '../constants/message.js';
 import Discount from './Discount.js';
 import Order from './Order.js';
+
+const { gift, christmas, weekend, weekday, star } = PROMOTION;
 
 class Promotion {
   #order;
@@ -12,12 +16,12 @@ class Promotion {
 
   checkCanGetGift() {
     const totalPrice = this.readTotalPrice();
-    return totalPrice >= 120000;
+    return totalPrice >= PRICE.giftBase;
   }
 
   checkCanGetDiscount() {
     const totalPrice = this.readTotalPrice();
-    return totalPrice >= 10000;
+    return totalPrice >= PRICE.discountBase;
   }
 
   readOrderBoard() {
@@ -40,7 +44,7 @@ class Promotion {
   calculatePriceForPay() {
     const promotion = this.createPromotion();
     let totalDiscount = this.calculateTotalDiscount();
-    if (promotion['증정 이벤트']) totalDiscount -= 25000;
+    if (promotion[gift]) totalDiscount -= PRICE.giftPrice;
     return this.readTotalPrice() - totalDiscount;
   }
 
@@ -59,24 +63,23 @@ class Promotion {
   addPromotionOnBoard(discountList, orderBoard) {
     const promotion = {};
     if (discountList.christmasDday)
-      promotion['크리스마스 디데이 할인'] =
-        this.#discount.getChristmasDdayDiscount();
+      promotion[christmas] = this.#discount.getChristmasDdayDiscount();
     if (discountList.weekend)
-      promotion['주말 할인'] = this.#discount.getWeekendDiscount(orderBoard);
+      promotion[weekend] = this.#discount.getWeekendDiscount(orderBoard);
     if (discountList.weekday)
-      promotion['평일 할인'] = this.#discount.getWeekdayDiscount(orderBoard);
+      promotion[weekday] = this.#discount.getWeekdayDiscount(orderBoard);
     if (discountList.starDay)
-      promotion['특별 할인'] = this.#discount.getStarDayDiscount();
-    if (this.checkCanGetGift()) promotion['증정 이벤트'] = 25000;
+      promotion[star] = this.#discount.getStarDayDiscount();
+    if (this.checkCanGetGift()) promotion[gift] = PRICE.giftPrice;
 
     return promotion;
   }
 
   provideBadge() {
-    if (this.calculateTotalDiscount() >= 20000) return '산타';
-    if (this.calculateTotalDiscount() >= 10000) return '트리';
-    if (this.calculateTotalDiscount() >= 5000) return '별';
-    return '없음';
+    if (this.calculateTotalDiscount() >= PRICE.santaBase) return GIFT.santa;
+    if (this.calculateTotalDiscount() >= PRICE.treeBase) return GIFT.tree;
+    if (this.calculateTotalDiscount() >= PRICE.starBase) return GIFT.star;
+    return MESSAGE.none;
   }
 }
 

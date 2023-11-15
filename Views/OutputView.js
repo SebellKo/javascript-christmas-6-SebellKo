@@ -1,16 +1,17 @@
 import { Console } from '@woowacourse/mission-utils';
+import MESSAGE from '../constants/message.js';
 
 const OutputView = {
   printOrderMenu(menu) {
-    Console.print('<주문 메뉴>');
+    Console.print(MESSAGE.orderMenu);
     menu.forEach((menu) => {
       Console.print(`${menu.name} ${menu.amount}개`);
     });
-    Console.print('');
+    Console.print(MESSAGE.newLine);
   },
 
   printStartMent() {
-    Console.print('안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.');
+    Console.print(MESSAGE.greet);
   },
 
   printError(error) {
@@ -24,55 +25,47 @@ const OutputView = {
   },
 
   printTotalPrcie(price) {
-    Console.print('<할인 전 총주문 금액>');
+    Console.print(MESSAGE.beforeDiscountPrice);
     Console.print(`${price.toLocaleString('ko-KR')}원`);
-    Console.print('');
+    Console.print(MESSAGE.newLine);
   },
 
   printGift(gift) {
-    Console.print('<증정 메뉴>');
+    Console.print(MESSAGE.giftMenu);
     Console.print(gift);
-    Console.print('');
+    Console.print(MESSAGE.newLine);
   },
 
   printPromotion(promotion) {
-    Console.print('<혜택 내역>');
+    Console.print(MESSAGE.promotion);
     if (Object.keys(promotion).length === 0) {
-      Console.print('없음');
-      Console.print('');
+      Console.print(MESSAGE.none);
+      Console.print(MESSAGE.newLine);
       return;
     }
     Object.entries(promotion).forEach((item) =>
       Console.print(`${item[0]}: -${item[1].toLocaleString('ko-KR')}원`),
     );
-    Console.print('');
+    Console.print(MESSAGE.newLine);
   },
 
   printTotalDiscount(price) {
     const totalDiscount =
       price === 0 ? price : `-${price.toLocaleString('ko-KR')}`;
-    Console.print('<총혜택 금액>');
+    Console.print(MESSAGE.totalPromotion);
     Console.print(`${totalDiscount}원`);
-    Console.print('');
+    Console.print(MESSAGE.newLine);
   },
 
   printPriceForPay(price) {
-    Console.print('<할인 후 예상 결제 금액>');
+    Console.print(MESSAGE.afterDiscountPrice);
     Console.print(`${price.toLocaleString('ko-KR')}원`);
-    Console.print('');
+    Console.print(MESSAGE.newLine);
   },
 
   printEventBadge(badge) {
-    Console.print('<12월 이벤트 배지>');
+    Console.print(MESSAGE.eventBadge);
     Console.print(`${badge}`);
-  },
-
-  printNone() {
-    Console.print('없음');
-  },
-
-  printNewLine() {
-    Console.print('');
   },
 };
 

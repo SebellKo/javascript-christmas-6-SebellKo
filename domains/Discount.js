@@ -1,4 +1,5 @@
 import MENU_BOARD from '../constants/menu.js';
+import { RANGE, DATE, PRICE } from '../constants/promotion.js';
 import { checkIsInRange, checkIsNumber } from '../utils/ValidationUtils.js';
 
 class Discount {
@@ -9,7 +10,8 @@ class Discount {
   }
 
   static validate(date) {
-    if (!checkIsNumber(date) || !checkIsInRange(1, 31, date)) return false;
+    if (!checkIsNumber(date) || !checkIsInRange(RANGE.min, RANGE.max, date))
+      return false;
     return true;
   }
 
@@ -20,7 +22,7 @@ class Discount {
     });
 
     const totalDiscount = typeDishes.reduce((acc, menu) => {
-      return acc + menu.amount * 2023;
+      return acc + menu.amount * PRICE.year;
     }, 0);
 
     return totalDiscount;
@@ -30,16 +32,16 @@ class Discount {
     const contentsObj = {};
     const day = new Date(`2023-12-${this.#date}`).getDay();
 
-    contentsObj.christmasDday = this.#date <= 25;
-    contentsObj.starDay = this.#date === 25 || day === 0;
-    contentsObj.weekend = day === 5 || day === 6 ? true : false;
+    contentsObj.christmasDday = this.#date <= DATE.christmas;
+    contentsObj.starDay = this.#date === DATE.christmas || day === DATE.sun;
+    contentsObj.weekend = day === DATE.fri || day === DATE.sat ? true : false;
     contentsObj.weekday = !contentsObj.weekend;
 
     return contentsObj;
   }
 
   getChristmasDdayDiscount() {
-    return (this.#date - 1) * 100 + 1000;
+    return (this.#date - 1) * PRICE.eachDay + 1000;
   }
 
   getWeekendDiscount(orderMenu) {
