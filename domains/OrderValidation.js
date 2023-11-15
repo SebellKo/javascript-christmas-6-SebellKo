@@ -29,19 +29,23 @@ class OrderValidation {
 
     return this.orderMenu.every((menu) => menuBoard.includes(menu));
   }
+
   checkIsMenuCountValid() {
     return this.orderCount.every((count) => count >= 1);
   }
+
   checkIsMenuDuplicated() {
     const checkedMenu = new Set(this.orderMenu);
     return checkedMenu.size !== this.orderMenu.length;
   }
+
   checkIsTotalCountValid() {
     return (
       this.orderCount.reduce((acc, cur) => acc + Number(cur), 0) <
       RANGE.maxOrder
     );
   }
+
   checkIsAllBeverage() {
     const beverageMenu = extractKeys(MENU_BOARD, 'menu', 'beverage');
     return this.orderMenu.every((menu) => beverageMenu.includes(menu));

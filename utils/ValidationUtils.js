@@ -8,12 +8,8 @@ const checkIsKorean = (input) => {
   return check.test(input);
 };
 
-const checkIncludeHypen = (input) => {
-  return input.includes('-');
-};
+const checkIncludeHypen = (input) => input.includes('-');
 
-const checkIsInRange = (min, max, input) => {
-  return input >= min && input <= max;
-};
+const checkIsInRange = (min, max, input) => input >= min && input <= max;
 
 export { checkIsNumber, checkIsKorean, checkIncludeHypen, checkIsInRange };
